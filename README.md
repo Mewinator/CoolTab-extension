@@ -1,4 +1,4 @@
-# CoolTab ```v1.5```
+# CoolTab Extension Edition```v1.5```
 ### Like a newtab, but with more stuff
 <div>
     <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/Mewinator/CoolTab-extension?style=for-the-badge&logo=github&logoColor=white&labelColor=%23121212&color=black" style="border-radius: 8px;">
@@ -7,21 +7,14 @@
 </div>
 
 ## Setup
-#### 1. Fork
-To setup you need to first fork this repo(A star is also helpful)
+1. Star this repo to let people know it is good
+2. Download the repo by clicking ```Code``` and ```Download zip```
+3. Extract the zip to a folder.
+4. Turn on developer mode on Chrome by going to ```chrome://extensions``` and flipping the ```Developer Mode``` toggle
+5. Click the ```Load unpacked``` and select your folder
+6. You're done and now you have CoolTab as your newtab
 
-#### 2. Run
-You need to run this somewhere, it doesn't matter where, Github Pages, Vercel, or localhost. As long as you can access it then it will work.
 
-## Todo
-- [x] Add a settings page
-- [x] Make it so you can save your own app grids and customize them
-- [ ] Alternative search engines, currently it's all DuckDuckGo
-- [x] Allow custom wallpapers and themes
-- [ ] Add more widgets and make them customizable
-- [x] Introducing a feature to change apps on the bottom bar
-- [X] Make CoolTab a Chrome extension
-- [ ] Allow background music
 
 #### This is under the Apache-2.0 License which means...
 - CREDIT ME!!!
@@ -29,5 +22,4 @@ You need to run this somewhere, it doesn't matter where, Github Pages, Vercel, o
 - Specify significant changes to the code: e.g. Saying that you added light mode(Not that you would want to add it because it burns my eyes.)
 - You are allowed to modify it.
 - Not all guidelines are displayed here.
-
-#### Feedback is appreciated at [Google form](https://forms.gle/rCHCbyaY7PT1NN8S6)
+- This is my understanding of this... I think
