@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CoolTab / Settings</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Google+Sans" rel="stylesheet">
+        <link rel="icon" href="./img/CoolTab.svg">
+        <style>
+            :root {
+                --bg: #282828;
+                --glass-bg: #282828B5;
+                --secondary: #2d2d2d;
+                --tertiary: #3B3B3B;
+                --text-primary: #ffffff;
+                --text-secondary: #c8c8c8;
+            }
+            html, body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                color: var(--text-primary);
+                font-family: 'Inter';
+                background: var(--bg);
+                margin: 0;
+                scrollbar-width: 100px;
+                scrollbar-color: var(--bg) transparent;
+            }
+            body { display: flex; }
+            [glass] {
+                background: var(--glass-bg);
+                backdrop-filter: blur(15px) contrast(80%);
+                box-shadow: 0 0 10px rgba(0,0,0,0.5);
+                transition: all 0.2s ease-in-out;
+            }
+            aside {
+                padding: 10px 24px;
+                background: var(--tertiary);
+                height: 100%;
+                width: 250px;
+                gap: 32px;
+            }
+            .logo { display: flex; flex-direction: row; gap: 12px; cursor: pointer; }
+            main {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: flex-start;
+                gap: 12px;
+                background: none;
+                padding: 16px 32px;
+                overflow-y: scroll;
+            }
+            .item {
+                background: var(--secondary);
+                border-radius: 20px;
+                width: fit-content;
+                max-width: 300px;
+                height: fit-content;
+                padding: 8px;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                gap: 6px;
+                min-height: 340px;
+                position: relative;
+            }
+            .item button {
+                background: var(--tertiary);
+                border-radius: 12px;
+                color: var(--text-primary);
+                border: none;
+                display: flex;
+                flex-direction: row;
+                font-size: 20px;
+                padding: 8px 24px;
+                transition: transform 0.16s ease;
+            }
+            .item button:hover { cursor: pointer; transform: scale(1.05); }
+            .var-line {
+                display: flex;
+                gap: 4px;
+                padding: 2px 4px;
+                border-radius: 4px;
+            }
+            .var-line:hover { background: var(--secondary); cursor: pointer; }
+            .var-line .colon { margin: 0 2px; }
+            #varPanel { margin-top: 12px; }
+            .apps-list {
+                display: grid;
+                width: 100%;
+                max-height: 350px;
+                grid-template-rows: auto;
+                grid-template-columns: repeat(3, 1fr);
+                row-gap: 0;
+                column-gap: 12px;
+                padding: 12px;
+                overflow-x: hidden;
+                overflow-y: scroll;
+                scrollbar-width: 100px;
+                scrollbar-color: var(--bg) transparent;
+            }
+            .app-item {
+                border-radius: 12px;
+                background: none;
+                transition: background 0.16s ease;
+                padding: 12px;
+                min-height: 64px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+                cursor: grab;
+                position: relative;
+                user-select: none;
+            }
+            .app-item.dragging { cursor: grabbing; }
+            .app-item:hover { background: var(--secondary); }
+            .app-item.selected { background: var(--tertiary); cursor: grabbing; }
+            .app-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 8px;
+                transition: transform 0.16s ease;
+            }
+            .app-item:hover .app-icon { transform: translateY(-2px); }
+            .app-name {
+                opacity: 0;
+                font-size: 12px;
+                text-align: center;
+                transition: opacity 0.16s ease;
+            }
+            .app-item:hover .app-name {opacity: 1; }
+            .edit-btn {
+                position: absolute;
+                top: 4px;
+                right: 4px;
+                border: none;
+                color: var(--text-primary);
+                cursor: pointer;
+                display: none;
+                opacity: 0;
+                transition: opacity 0.16s ease;
+            }
+            .app-item:hover .edit-btn { display: flex; opacity: 1; }
+            .app-controls {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                display: flex;
+                gap: 8px;
+            }
+            .control-btn {
+                border: none;
+                color: var(--text-primary);
+                cursor: pointer;
+                font-size: 20px;
+                opacity: 0.5;
+            }
+            .control-btn:hover { opacity: 1; }
+            #recycleBin { font-size: 24px; }
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2000;
+            }
+            .modal-content {
+                background: var(--secondary);
+                padding: 32px;
+                border-radius: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            }
+            .modal-content h3 {
+                margin: 0;
+                font-size: 20px;
+                font-weight: 600;
+                color: var(--text-primary);
+            }
+            .modal-content label {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                font-size: 14px;
+                color: var(--text-secondary);
+                font-weight: 500;
+            }
+            .modal-content input {
+                padding: 12px 16px;
+                border-radius: 8px;
+                border: 1px solid var(--tertiary);
+                background: var(--bg);
+                color: var(--text-primary);
+                font-family: 'Inter', sans-serif;
+                font-size: 14px;
+                transition: border-color 0.16s ease;
+            }
+            .modal-content input:focus {
+                outline: none;
+                border-color: #75b8ff;
+                background: var(--bg);
+            }
+            .modal-buttons {
+                display: flex;
+                gap: 12px;
+                margin-top: 8px;
+            }
+            .modal-content button {
+                padding: 12px 24px;
+                background: var(--tertiary);
+                border: none;
+                border-radius: 8px;
+                color: var(--text-primary);
+                cursor: pointer;
+                font-family: 'Inter', sans-serif;
+                font-size: 14px;
+                font-weight: 500;
+                transition: background 0.16s ease, transform 0.16s ease;
+                flex: 1;
+            }
+            .modal-content button:hover { background: #4a4a4a; transform: translateY(-2px); }
+            #cancelAppBtn { background: var(--tertiary); }
+            #saveAppBtn { background: #75b8ff; color: var(--bg); }
+            #saveAppBtn:hover { background: #5a9fe6; }
+        </style>
+    </head>
+    <body>
+        <aside>
+            <div class="logo" id="logo_button">
+                <img src="./img/CoolTab.svg" style="width: 54px; height: 54px;">
+                <h1 style="font-size: 24px; font-weight: 500;">CoolTab</h1>
+            </div>
+            <img src="https://placehold.co/200x600/282828/ffffff?text=Placeholder ad" style="position: fixed; bottom: 18px;">
+        </aside>
+        <main>
+            <div class="item">
+                <img id="previewImage" src="taptappingu.gif" alt="Background preview" style="border-radius: 16px 16px 8px 8px; width: 264px; height: auto;">
+                <span id="imgText" style="color: var(--text-secondary);"></span>
+                <h2>Background image</h2>
+                <input type="file" id="fileUpload" accept=".jpg, .png, .gif, .jpeg" style="display:none;">
+                <div>
+                    <input type="checkbox" id="blend_px">
+                    <span>Pixelate/Sharpen image</span>
+                </div>
+                <button id="upload_btn">Upload<span class="material-symbols-outlined">upload</span></button>
+            </div>
+            <div class="item" style="min-width: 280px;">
+                <h2>Theme colors</h2>
+                <div style="background: var(--bg); border-radius: 16px; padding: 12px; font-size: 16px; width: calc(100% - 32px);" id="themeOutput"></div>
+                <div id="varPanel"></div>
+            </div>
+            <div class="item">
+                <h2>Customize apps menu</h2>
+                <div class="app-controls">
+                    <button id="addAppBtn" class="control-btn" style="background: none; padding: 0;" title="Add app"><span class="material-symbols-outlined">add</span></button>
+                    <div id="recycleBin" class="control-btn" style="background: none; padding: 0;" title="Drag app here to delete"><span class="material-symbols-outlined">delete</span></div>
+                </div>
+                <div id="appsList" class="apps-list"></div>
+            </div>
+        </main>
+        <div id="appModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <h3 id="modalTitle">Add App</h3>
+                <label>Display Name <input id="appNameInput" placeholder="e.g., Gmail"></label>
+                <label>URL <input id="appUrlInput" placeholder="e.g., https://mail.google.com/"></label>
+                <div class="modal-buttons">
+                    <button id="cancelAppBtn">Cancel</button>
+                    <button id="saveAppBtn">Save</button>
+                </div>
+            </div>
+        </div>
+        <script src="./storage.js"></script>
+        <script src="./settings.js"></script>
+    </body>
+</html>

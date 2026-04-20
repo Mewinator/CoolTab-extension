@@ -1,0 +1,15 @@
+{
+    "name": "CoolTab",
+    "description": "By Mewinator\nExtension edition of CoolTab",
+    "version": "1.5",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "manifest_version": 3,
+    "permissions": [
+        "storage"
+    ],
+    "icons": {
+        "128": "img/logo/128.png"
+    }
+}

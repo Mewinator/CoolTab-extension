@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cooltab</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Google+Sans" rel="stylesheet">
+        <link rel="icon" href="./img/CoolTab.svg">
+        <style>
+            :root {
+                --bg: #282828;
+                --glass-bg: #282828B5;
+                --secondary: #2d2d2d;
+                --tertiary: #3B3B3B;
+                --text-primary: #ffffff;
+                --text-secondary: #c8c8c8;
+            }
+            body {
+                width: 100%;
+                height: 100%;
+                --bg-url: url('./taptappingu.gif');
+                background-image: var(--bg-url);
+                background-size: cover;
+                background-attachment: fixed;
+                background-position: center;
+                overflow: hidden;
+                color: var(--text-primary);
+                font-family: 'Inter';
+            }
+            [glass] {
+                background: var(--glass-bg);
+                backdrop-filter: blur(15px) contrast(80%);
+                box-shadow: 0 0 10px rgba(0,0,0,0.5);
+                transition: all 0.2s ease-in-out;
+            }
+            .bottom_bar {
+                display: flex;
+                align-items: center;
+                border-radius: 24px;
+                padding: 12px 50px;
+                height: 48px;
+                max-width: 90%;
+                min-width: fit-content;
+                width: 1500px;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 16px;
+                gap: 12px;
+            }
+            .bottom_bar img { border-radius: 8px; }
+            img { width: 48px; height: 48px; transition: transform 0.16s ease-in-out; }
+            img:hover { transform: scale(1.1); }
+            .search_bar {
+                background: var(--bg);
+                border-radius: 50px;
+                height: 36px;
+                width: clamp(900px, 975px, 75%);
+                position: absolute;
+                bottom: 116px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 6px;
+                display: flex;
+                align-items: center;
+                transition: bottom 0.16s ease-in-out;
+                z-index: 1001;
+            }
+            .search_bar.active { bottom: 65%; }
+            .ai {
+                position: relative;
+                padding: 8px 20px;
+                margin-left: -2px;
+                font-weight: 500;
+                font-size: 14px;
+                font-family: 'Google Sans', 'Inter', sans-serif;
+                color: var(--text-primary);
+                background-color: transparent;
+                border-radius: 50px;
+                cursor: pointer;
+                border: none;
+                overflow: hidden;
+                z-index: 1;
+                transition: opacity 400ms linear;
+            }
+            .ai.init::before { animation: initial-fade-rotate 2s linear forwards; }
+            .ai::before {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 400%;
+                height: 400%;
+                background: conic-gradient(
+                    from 180deg at 50% 50%,
+                    #3186ff 0deg,
+                    #34a853 43deg,
+                    #ffd314 65deg,
+                    #ff4641 105deg,
+                    #3186ff 144deg,
+                    #3186ff 180deg,
+                    rgba(49, 134, 255, 0) 324deg,
+                    rgba(49, 134, 255, 0) 360deg
+                );
+                opacity: 0;
+                z-index: -2;
+                transition: opacity 400ms linear;
+            }
+            .ai:hover::before { opacity: 1; animation: rotate-gradient 5000ms linear infinite; }
+            .ai::after {
+                content: '';
+                position: absolute;
+                top: 1.5px;
+                left: 1.5px;
+                width: calc(100% - 3px);
+                height: calc(100% - 3px);
+                background: var(--tertiary);
+                border-radius: 49px;
+                z-index: -1;
+            }
+            .ai span { position: relative; z-index: 2; }
+            @keyframes initial-fade-rotate {
+                0%   { opacity: 0; transform: translate(-50%, -50%) rotate(0deg); }
+                30%  { opacity: 1; }
+                50%  { opacity: 1; }
+                100% { opacity: 0; transform: translate(-50%, -50%) rotate(180deg); }
+            }
+            @keyframes rotate-gradient { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+            ::placeholder { color: var(--text-secondary); }
+            #search {
+                background: none;
+                border: none;
+                width: 100%;
+                font-size: 16px;
+                font-family: 'Inter', sans-serif;
+                color: var(--text-primary);
+            }
+            #search:focus { outline: none; background: var(--bg); border: none; color: var(--text-primary); }
+            nav {
+                width: 98%;
+                height: 100px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            #clock_shell {
+                background: var(--bg);
+                border-radius: 50px;
+                height: 72px;
+                width: clamp(200px, 264px, 30%);
+                display: flex;
+                align-items: center;
+                z-index: 1000;
+                padding: 6px;
+                gap: 12px;
+            }
+            #clock_shell iframe { height: 66px; width: 66px; border: none; }
+            #clock_shell span { color: var(--text-primary); }
+            .widgets { color: var(--text-primary); font-size: 24px; display: flex; flex-direction: row; align-items: center; gap: 12px; border-radius: 16px; padding: 10px 24px; }
+            .widgets a { text-decoration: none; }
+            #apps {
+                position: absolute;
+                z-index: 1000;
+                padding: 0;
+                border: none;
+                border-radius: 16px;
+                overflow-x: hidden;
+                position-anchor: --apps-button;
+                position-area: bottom span-left;
+                top: 20px;
+            }
+            #apps:not([open]) { display: none; }
+            .apps_grid {
+                display: grid;
+                width: 255px;
+                height: 348px;
+                max-height: 348px;
+                opacity: 1;
+                grid-template-rows: auto;
+                grid-template-columns: repeat(3, 1fr);
+                row-gap: 0;
+                column-gap: 12px;
+                padding: 12px;
+                overflow-x: hidden;
+                overflow-y: scroll;
+                scrollbar-width: 100px;
+                scrollbar-color: var(--bg) transparent;
+            }
+            .apps_grid a {
+                border-radius: 12px;
+                background: none;
+                transition: background 0.16s ease;
+                padding: 12px;
+                min-height: 64px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+                text-decoration: none;
+                position: relative;
+            }
+            .apps_grid a > img {
+                width: 48px;
+                height: 48px;
+                object-fit: cover;
+                transition: transform 0.16s ease;
+            }
+            .apps_grid a > img:hover { transform: translateY(-2px); }
+            .apps_grid a:hover { background: var(--secondary); }
+            .apps_grid span {
+                color: var(--text-primary);
+                font-size: 12px;
+                line-height: 1;
+                white-space: nowrap;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 8px;
+                opacity: 0;
+                transition: opacity 120ms ease;
+                pointer-events: none;
+            }
+            .apps_grid a:hover > span { opacity: 1; }
+            #suggestions {
+                background: var(--bg);
+                border-radius: 24px;
+                width: clamp(900px, 975px, 75%);
+                position: absolute;
+                bottom: 164px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 12px 0px;
+                display: none;
+                color: var(--text-primary);
+                font-family: 'Inter', sans-serif;
+            }
+            #suggestions.active { display: block; }
+            .suggestion-item { padding: 8px 18px; cursor: pointer; }
+            .suggestion-item:hover { background: var(--secondary); }
+            #changelog {
+                position: absolute;
+                transform: translateX(50%);
+                transform: translateY(0);
+                border-radius: 32px;
+                z-index: 1002;
+                overflow: hidden;
+                width: 600px;
+                max-width: 600px;
+                height: 700px; /*No joke included, I just liked the aspect ratio of 6:7*/
+                padding: 0;
+                border: none;
+                outline: none;
+                display: flex;
+                flex-direction: column;
+            }
+            #changelog header { flex-shrink: 0; }
+            #changelog .content::-webkit-scrollbar { display: none; }
+            #changelog .content {
+                padding: 16px 32px;
+                gap: 10px;
+                width: fit-content;
+                flex: 1;
+                overflow-y: auto;
+                overflow-x: hidden;
+                color: var(--text-primary);
+            }
+            #changelog footer button { 
+                background: var(--secondary);
+                color: var(--text-primary);
+                padding: 4px 12px;
+                font-size: 24px;
+                outline: none;
+                border: 1px solid var(--text-primary);
+                border-radius: 8px;
+                cursor: pointer;
+                transition: transform 0.16s ease;
+            }
+            #changelog footer button:hover { transform: scale(1.01); }
+            #changelog footer {
+                flex-shrink: 0;
+                background: var(--secondary);
+                padding: 16px;
+                display: flex;
+                justify-content: flex-end;
+            }
+            #changelog::backdrop { background: black; opacity: 0.6; }
+        </style>
+    </head>
+    <body>
+        <span style="position: absolute; top: 1px; left: 1.5px; color: var(--text-primary); font-size: 12px;">Under Apache-2.0 License - Version 1.5 by Mewinator</span>
+        <nav>
+            <div id="clock_shell">
+                <iframe src="./clock.html"></iframe>
+                <div>
+                    <span id="date"></span>
+                    <br>
+                    <span id="hhmmss"></span>
+                    <span id="ampm"></span>
+                </div>
+            </div>
+            <div class="widgets" glass>
+                <a style="color: var(--text-primary);" id="mail" href="https://mail.google.com/"><span>Mail</span></a>
+                <span id="app_button" class="material-symbols-outlined" style="cursor: pointer; font-size: 32px; anchor-name: --apps-button;">apps</span>
+                <span id="settings_button" class="material-symbols-outlined" style="cursor: pointer; font-size: 32px;">settings</span>
+            </div>
+        </nav>
+        <div class="search_bar">
+            <div style="height: 38px; width: calc(100% - 96px); display: flex; align-items: center; gap: 12px;">
+                <img src="./img/duck.png" style="width: 38px; height: 38px;">
+                <input id="search" autocomplete="off" type="text" placeholder="Search...">
+            </div>
+            <!--<a href="[(AI URL)]"><button class="ai init"><span>[(AI NAME)]</span></button></a>-->
+        </div>
+        <div id="suggestions"></div>
+        <div glass class="bottom_bar">
+        </div>
+        <dialog glass id="apps">
+            <div style="display: flex; align-items: center; background: #4c4c4c; height: 16px; width: 100%; border-radius: 16px 16px 0 0; padding: 6px;">
+                <svg viewBox="0 0 50 14" height="14" width="50">
+                    <circle cx="7" cy="7" r="7" fill="#FF5656"></circle>
+                    <circle cx="25" cy="7" r="7" fill="#FFCF56"></circle>
+                    <circle cx="43" cy="7" r="7" fill="#44D950"></circle>
+                </svg>
+            </div>
+            <div class="apps_grid"></div>
+        </dialog>
+        <dialog id="changelog" glass>
+            <header style="display: flex; align-items: center; background: #4c4c4c; height: 18px; width: 100%; border-radius: 16px 16px 0 0; padding: 6px;">
+                <svg viewBox="0 0 64 16" height="14" width="50">
+                    <circle cx="14" cy="8" r="7" fill="#FF5656"></circle>
+                    <circle cx="32" cy="8" r="7" fill="#FFCF56"></circle>
+                    <circle cx="50" cy="8" r="7" fill="#44D950"></circle>
+                </svg>
+            </header>
+            <div class="content">
+                <h1>Welcome to the Chrome Extension CoolTab port.</h1>
+                <h1>Cooltab version 1.5</h1>
+                <br>
+                <br>
+                <h2>Changelog / Notes</h2>
+                <ul style="font-size: 20px;">
+                    <li>Settings Page
+                        <ul>
+                            <li>Added new card for customizing and re-organising your apps.</li>
+                        </ul>
+                    </li>
+                    <li>Apps
+                        <ul>
+                            <li>Now you can re-organise your apps grid.</li>
+                            <li>Pinning apps puts them on the bottom bar.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul style="font-size: 20px;">
+                    <li>I'm still working out a name for the <i>Bottom Bar</i> but these are what you can call it:
+                    <ul>
+                        <li>Bottom Bar</li>
+                        <li>Pinned Apps</li>
+                        <li>Shortcuts Bar</li>
+                    </ul>
+                    </li>
+                </ul>
+            </div>
+            <footer>
+                <button id="changelog_close_btn">Close</button>
+            </footer>
+        </dialog>
+        <script defer src="./storage.js"></script>
+        <script defer src="./newtab.js"></script>
+    </body>
+</html>

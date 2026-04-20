@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body { overflow: hidden; margin: 0; }
+        svg{ position: absolute; top: 0; left: 0; }
+        text {
+            fill: white;
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+    </style>
+</head>
+<body>
+    <svg id="clock" width="66" height="66" viewBox="0 0 300 300">
+        <circle cx="150" cy="150" r="140" fill="#222" stroke="#aaa" stroke-width="4"/>
+        <g id="ticks"></g>
+        <g id="numbers"></g>
+        <line id="hourHand" x1="150" y1="150" x2="150" y2="95" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+        <line id="minuteHand" x1="150" y1="150" x2="150" y2="70" stroke="#9f9f9f" stroke-width="8" stroke-linecap="round"/>
+        <line id="secondHand" x1="150" y1="150" x2="150" y2="50" stroke="red" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="150" cy="150" r="5" fill="red"/>
+    </svg>
+    <script src="./clock.js"></script>
+</body>
+</html>
